@@ -4,7 +4,6 @@ Tokenization utilities for Ollama models
 from langchain_core.language_models.chat_models import BaseChatModel
 from ..logging import get_logger
 
-
 def num_tokens_ollama(text: str, llm_model:BaseChatModel) -> int:
     """
     Estimate the number of tokens in a given text using Ollama's tokenization method,
@@ -21,11 +20,9 @@ def num_tokens_ollama(text: str, llm_model:BaseChatModel) -> int:
     logger = get_logger()
 
     logger.debug(f"Counting tokens for text of {len(text)} characters")
-    try:
-        model = llm_model.model_name
-    except AttributeError:
-        raise NotImplementedError(f"The model provider you are using ('{llm_model}') "
-            "does not give us a model name so we cannot identify which encoding to use")
 
-    raise NotImplementedError(f"Ollama tokenization not implemented yet")
+    # Use langchain token count implementation
+    # NB: https://github.com/ollama/ollama/issues/1716#issuecomment-2074265507
+    tokens = llm_model.get_num_tokens(text)
+    return tokens
 
